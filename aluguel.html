@@ -86,7 +86,6 @@
       border-radius: 100px;
     }
 
-    /* ── STATS ── */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -141,7 +140,6 @@
       color: #666688;
     }
 
-    /* ── PROGRESS ── */
     .progress-section {
       background: var(--card);
       border: 1px solid var(--border);
@@ -230,7 +228,6 @@
     .breakdown-name { font-size: 0.72rem; color: #888899; flex: 1; }
     .breakdown-val  { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem; }
 
-    /* ── DONUTS ── */
     .chart-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -272,7 +269,6 @@
 
     .donut-center .lbl { font-size: .6rem; color: #666688; letter-spacing: 1px; text-transform: uppercase; }
 
-    /* ── PARCELAS ── */
     .timeline-section {
       background: var(--card);
       border: 1px solid var(--border);
@@ -389,7 +385,6 @@
       font-weight: 700;
     }
 
-    /* ── TOAST ── */
     .toast {
       position: fixed;
       bottom: 32px;
@@ -415,7 +410,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ── FOOTER ── */
     .footer-note {
       margin-top: 32px;
       text-align: center;
@@ -425,7 +419,6 @@
       text-transform: uppercase;
     }
 
-    /* ── ANIMATIONS ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0);    }
@@ -458,7 +451,6 @@
 
 <div class="container">
 
-  <!-- Header -->
   <header>
     <div class="header-left">
       <h1>Abatimento<br/><span>do Aluguel</span></h1>
@@ -467,7 +459,6 @@
     <div class="header-badge">2026 / 2027</div>
   </header>
 
-  <!-- Stats -->
   <div class="stats-grid">
     <div class="stat-card green">
       <div class="stat-label">Valor Total da Dívida</div>
@@ -482,7 +473,7 @@
     <div class="stat-card pink">
       <div class="stat-label">Saldo Restante</div>
       <div class="stat-value" id="stat-restante">R$ 3.700</div>
-      <div class="stat-sub" id="stat-faltam-label">10 parcelas restantes</div>
+      <div class="stat-sub" id="stat-faltam-label">11 parcelas restantes</div>
     </div>
     <div class="stat-card gold">
       <div class="stat-label">Próxima Parcela</div>
@@ -491,7 +482,6 @@
     </div>
   </div>
 
-  <!-- Progress -->
   <div class="progress-section">
     <div class="section-title">Progresso Geral</div>
     <div class="progress-header">
@@ -518,18 +508,17 @@
       </div>
       <div class="breakdown-item">
         <div class="breakdown-dot" style="background:var(--accent)"></div>
-        <div class="breakdown-name">9 parcelas mensais</div>
+        <div class="breakdown-name">8x R$400 + Ago/26 R$0</div>
         <div class="breakdown-val" style="color:var(--accent)">R$ 400 / mês</div>
       </div>
       <div class="breakdown-item">
         <div class="breakdown-dot" style="background:#f0a060"></div>
-        <div class="breakdown-name">Parcela final (Jan/27)</div>
-        <div class="breakdown-val" style="color:#f0a060">R$ 200</div>
+        <div class="breakdown-name">Jan/27 R$400 + Fev/27 R$200</div>
+        <div class="breakdown-val" style="color:#f0a060">parcelas finais</div>
       </div>
     </div>
   </div>
 
-  <!-- Donuts -->
   <div class="chart-row">
     <div class="chart-card">
       <div class="section-title">Parcelas pagas</div>
@@ -548,7 +537,7 @@
         </svg>
         <div class="donut-center">
           <div class="val" id="d-pagas">0</div>
-          <div class="lbl">de 10</div>
+          <div class="lbl">de 11</div>
         </div>
       </div>
     </div>
@@ -575,7 +564,6 @@
     </div>
   </div>
 
-  <!-- Timeline -->
   <div class="timeline-section">
     <div class="section-title">Cronograma de Parcelas</div>
     <div class="timeline-hint">Clique em qualquer parcela para marcar ou desmarcar como paga</div>
@@ -585,35 +573,37 @@
   <div class="footer-note">Dados salvos no navegador · Funciona offline</div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── DADOS BASE ──────────────────────────────────────────────────
   const TOTAL = 3700;
-  const CIRC  = 2 * Math.PI * 55; // ~345.6
+  const CIRC  = 2 * Math.PI * 55;
 
+  // ── ALTERAÇÕES:
+  // id 4 (Agosto/2026)  → valor: 0
+  // id 9 (Janeiro/2027) → valor: 400
+  // id 10 (Fevereiro/2027) → novo, valor: 200
   const BASE_PARCELAS = [
-    { id: 0, mes: 'Abril',     ano: 2026, valor: 400 },
-    { id: 1, mes: 'Maio',      ano: 2026, valor: 400 },
-    { id: 2, mes: 'Junho',     ano: 2026, valor: 400 },
-    { id: 3, mes: 'Julho',     ano: 2026, valor: 400 },
-    { id: 4, mes: 'Agosto',    ano: 2026, valor: 400 },
-    { id: 5, mes: 'Setembro',  ano: 2026, valor: 400 },
-    { id: 6, mes: 'Outubro',   ano: 2026, valor: 400 },
-    { id: 7, mes: 'Novembro',  ano: 2026, valor: 400 },
-    { id: 8, mes: 'Dezembro',  ano: 2026, valor: 400 },
-    { id: 9, mes: 'Janeiro',   ano: 2027, valor: 200 },
+    { id: 0,  mes: 'Abril',     ano: 2026, valor: 400 },
+    { id: 1,  mes: 'Maio',      ano: 2026, valor: 400 },
+    { id: 2,  mes: 'Junho',     ano: 2026, valor: 400 },
+    { id: 3,  mes: 'Julho',     ano: 2026, valor: 400 },
+    { id: 4,  mes: 'Agosto',    ano: 2026, valor: 0   },
+    { id: 5,  mes: 'Setembro',  ano: 2026, valor: 400 },
+    { id: 6,  mes: 'Outubro',   ano: 2026, valor: 400 },
+    { id: 7,  mes: 'Novembro',  ano: 2026, valor: 400 },
+    { id: 8,  mes: 'Dezembro',  ano: 2026, valor: 400 },
+    { id: 9,  mes: 'Janeiro',   ano: 2027, valor: 400 },
+    { id: 10, mes: 'Fevereiro', ano: 2027, valor: 200 },
   ];
 
-  // ── ESTADO (salvo no localStorage) ─────────────────────────────
-  const STORAGE_KEY = 'aluguel_pagas_v1';
+  const STORAGE_KEY = 'aluguel_pagas_v2';
 
   function loadState() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [true, true, true, false, false, false, false, false, false, false];
-    } catch { return [true, true, true, false, false, false, false, false, false, false]; }
+      return raw ? JSON.parse(raw) : [true, true, true, false, false, false, false, false, false, false, false];
+    } catch { return [true, true, true, false, false, false, false, false, false, false, false]; }
   }
 
   function saveState(arr) {
@@ -622,7 +612,6 @@
 
   let pagas = loadState();
 
-  // ── CÁLCULOS ────────────────────────────────────────────────────
   function calcTotais() {
     const descontado = BASE_PARCELAS.reduce((s, p, i) => s + (pagas[i] ? p.valor : 0), 0);
     const restante   = TOTAL - descontado;
@@ -632,15 +621,13 @@
     return { descontado, restante, pct, numPagas, proxIdx };
   }
 
-  // ── ATUALIZA UI ─────────────────────────────────────────────────
-  function updateUI(animate = true) {
+  function updateUI() {
     const { descontado, restante, pct, numPagas, proxIdx } = calcTotais();
     const numFaltam = BASE_PARCELAS.length - numPagas;
 
-    // Stats
-    document.getElementById('stat-descontado').textContent  = `R$ ${descontado.toLocaleString('pt-BR')}`;
-    document.getElementById('stat-restante').textContent    = `R$ ${restante.toLocaleString('pt-BR')}`;
-    document.getElementById('stat-pagas-label').textContent = `${numPagas} parcela${numPagas !== 1 ? 's' : ''} paga${numPagas !== 1 ? 's' : ''}`;
+    document.getElementById('stat-descontado').textContent   = `R$ ${descontado.toLocaleString('pt-BR')}`;
+    document.getElementById('stat-restante').textContent     = `R$ ${restante.toLocaleString('pt-BR')}`;
+    document.getElementById('stat-pagas-label').textContent  = `${numPagas} parcela${numPagas !== 1 ? 's' : ''} paga${numPagas !== 1 ? 's' : ''}`;
     document.getElementById('stat-faltam-label').textContent = `${numFaltam} parcela${numFaltam !== 1 ? 's' : ''} restante${numFaltam !== 1 ? 's' : ''}`;
 
     if (proxIdx >= 0) {
@@ -652,12 +639,10 @@
       document.getElementById('stat-proxima-val').textContent = 'Dívida encerrada';
     }
 
-    // Progress bar
     document.getElementById('progress-pct').textContent       = `${pct}%`;
     document.getElementById('progress-bar').style.width       = pct + '%';
     document.getElementById('progress-info-pago').textContent = `R$ ${descontado.toLocaleString('pt-BR')} descontados`;
 
-    // Donuts
     const arcPagas = (numPagas / BASE_PARCELAS.length) * CIRC;
     const arcPct   = (descontado / TOTAL) * CIRC;
     document.getElementById('donut-pagas').style.strokeDasharray = `${arcPagas} ${CIRC}`;
@@ -665,7 +650,6 @@
     document.getElementById('d-pagas').textContent = numPagas;
     document.getElementById('d-pct').textContent   = `${pct}%`;
 
-    // Cards
     document.querySelectorAll('.parcela-card').forEach((card, i) => {
       const isPago = pagas[i];
       card.classList.toggle('pago',     isPago);
@@ -674,21 +658,29 @@
     });
   }
 
-  // ── RENDERIZA GRID ──────────────────────────────────────────────
   function renderGrid() {
     const grid = document.getElementById('parcelas-grid');
     grid.innerHTML = '';
     BASE_PARCELAS.forEach((p, i) => {
-      const isUltima = p.valor === 200;
+      const isGratuita = p.valor === 0;
+      const isFinal    = p.ano === 2027;
       const card = document.createElement('div');
       card.className = `parcela-card ${pagas[i] ? 'pago' : 'pendente'}`;
       card.dataset.idx = i;
       card.style.animation = `fadeUp .5s ease ${.35 + i * .05}s both`;
+
+      const valorLabel = isGratuita
+        ? 'R$ 0,00'
+        : `R$ ${p.valor}`;
+      const subLabel = isGratuita
+        ? 'sem desconto'
+        : (isFinal ? 'parcela final' : 'mensal');
+
       card.innerHTML = `
         <div class="parcela-mes">${p.mes}${p.ano === 2027 ? '<span style="opacity:.5"> /27</span>' : ''}</div>
         <div class="parcela-valor">
-          R$ ${p.valor}
-          <small>${isUltima ? 'parcela final' : 'mensal'}</small>
+          ${valorLabel}
+          <small>${subLabel}</small>
         </div>
         <div class="parcela-status">${pagas[i] ? '✓ Pago' : '○ Pendente'}</div>
         <div class="check-icon">✓</div>
@@ -699,24 +691,23 @@
     });
   }
 
-  // ── TOGGLE ──────────────────────────────────────────────────────
   function toggleParcela(idx, card) {
     pagas[idx] = !pagas[idx];
     saveState(pagas);
     updateUI();
 
     card.classList.remove('just-toggled');
-    void card.offsetWidth; // reflow para reiniciar animação
+    void card.offsetWidth;
     card.classList.add('just-toggled');
 
     const p = BASE_PARCELAS[idx];
+    const valorMsg = p.valor === 0 ? 'mês sem desconto' : `R$ ${p.valor} descontados`;
     showToast(pagas[idx]
-      ? `${p.mes} marcado como pago — R$ ${p.valor} descontados!`
+      ? `${p.mes} marcado como pago — ${valorMsg}!`
       : `↩️ ${p.mes} desmarcado`
     );
   }
 
-  // ── TOAST ────────────────────────────────────────────────────────
   let toastTimer;
   function showToast(msg) {
     const t = document.getElementById('toast');
@@ -726,7 +717,6 @@
     toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
   }
 
-  // ── INIT ─────────────────────────────────────────────────────────
   renderGrid();
   setTimeout(() => updateUI(), 500);
 </script>
